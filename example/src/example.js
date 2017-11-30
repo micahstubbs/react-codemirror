@@ -6,18 +6,20 @@ const createReactClass = require('create-react-class');
 require('codemirror/mode/javascript/javascript');
 require('codemirror/mode/xml/xml');
 require('codemirror/mode/markdown/markdown');
+require('codemirror/mode/sql/sql');
 
 var defaults = {
 	markdown: '# Heading\n\nSome **bold** and _italic_ text\nBy [Jed Watson](https://github.com/JedWatson)',
-	javascript: 'var component = {\n\tname: "react-codemirror",\n\tauthor: "Jed Watson",\n\trepo: "https://github.com/JedWatson/react-codemirror"\n};'
+	javascript: 'var component = {\n\tname: "react-codemirror",\n\tauthor: "Jed Watson",\n\trepo: "https://github.com/JedWatson/react-codemirror"\n};',
+	sql: 'SELECT * FROM REPOS LIMIT 10\n--By Jed Watson https://github.com/JedWatson'
 };
 
 var App = createReactClass({
 	getInitialState () {
 		return {
-			code: defaults.markdown,
+			code: defaults.sql,
 			readOnly: false,
-			mode: 'markdown',
+			mode: 'sql',
 		};
 	},
 	updateCode (newCode) {
@@ -27,6 +29,8 @@ var App = createReactClass({
 	},
 	changeMode (e) {
 		var mode = e.target.value;
+		console.log('mode from changeMode', mode);
+		console.log('defaults[mode]', defaults[mode]);
 		this.setState({
 			mode: mode,
 			code: defaults[mode]
@@ -50,6 +54,7 @@ var App = createReactClass({
 					<select onChange={this.changeMode} value={this.state.mode}>
 						<option value="markdown">Markdown</option>
 						<option value="javascript">JavaScript</option>
+						<option value="sql">SQL</option>
 					</select>
 					<button onClick={this.toggleReadOnly}>Toggle read-only mode (currently {this.state.readOnly ? 'on' : 'off'})</button>
 				</div>
